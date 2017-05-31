@@ -1,0 +1,23 @@
+有时我们会有这样的需求:
+
+1. 没有屏，但是需要启动一个apk.
+----使用 am start 命令来启动即可. 例如对于 AccSensorData 这个 apk, 我们通过 am start -n com.example.accsensordata/.MainActivity 来启动.　其中,　com.example.accsensordata 是这个 apk 的 package name,　MainActivity 是这个 apk 的入口 Activity 的名称.
+andy@andy-OptiPlex-7040:~/work/msm8996_beijing/AP$ adb shell
+shell@lte26007:/ $ am start -n com.example.startapp/.MainActivity
+Starting: Intent { cmp=com.example.startapp/.MainActivity }
+shell@lte26007:/ $
+
+2. 但是，如果不知道这个 apk 的 package name 和入口 Activity 的名称怎么办呢?
+----我们通过 pm list packages　命令来查询某个　apk　的 package name. 但是入口Activity我们是没有办法查询的, 不过不要紧，只要我们找到了这个 apk 的 package name,　我们就可以通过 getLaunchIntentForPackage 方法可以获取这个 package　的 入口Activity, 然后调用 startActivity　方法就可以启动这个 apk 了.
+shell@lte26007:/ $ pm list packages | grep sensor
+package:com.yamaha.app.sensor.sensormonitor
+package:com.example.accsensordata
+shell@lte26007:/ $
+
+3. ----所以，方法是我们自己编写一个 apk, 在这个apk启动的时候去启动我们期望的那个 apk.
+
+参考:
+http://blog.csdn.net/garybook/article/details/7567797
+Android启动另一个应用(只需知道package name) 
+
+
